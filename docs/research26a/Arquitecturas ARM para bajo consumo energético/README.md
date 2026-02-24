@@ -184,9 +184,11 @@ El *Cortex-M55* con el coprocesador *Ethos-U55* de ARM permite ejecutar modelos 
 
 ```mermaid
 flowchart TD
+    I([Inicio])
+
     subgraph Entradas
-        S[Sensor / Interrupción]
-        RTC[Temporizador RTC]
+        S((Sensor / Interrupción))
+        RTC((Temporizador RTC))
     end
 
     subgraph Modos_de_Operacion
@@ -203,31 +205,36 @@ flowchart TD
     end
 
     subgraph Salidas
-        PR[Procesamiento de datos]
-        TX[Transmisión de datos\nBLE / LoRa / Zigbee]
-        ACT[Actuador / Respuesta]
+        PR[/Procesamiento de datos/]
+        TX[/Transmisión de datos\nBLE / LoRa / Zigbee/]
+        ACT[/Actuador / Respuesta/]
     end
 
-    RTC --> A
-    S --> A
+    D{¿Hay trabajo o evento?}
+    F([Fin])
+
+    I --> D
+    S --> D
+    RTC --> D
+
+    D -- Sí --> A
+    D -- No --> SL
 
     A --> PR
     A --> TX
     A --> ACT
-    A --> SL
-
-    SL --> DS
-    DS --> ST
-
-    ST --> A
-    SL --> A
 
     A --> CG
     A --> PG
     A --> DVFS
+
+    A --> SL
+    SL --> DS --> ST
+    ST --> D
+
 ```
 
----
+
 
 ## Otros Puntos Importantes
 
